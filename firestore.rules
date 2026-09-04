@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /patients/{patientId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+    match /operators/{operatorId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+    match /tables/{tableId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+    match /procedures/{procedureId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+    match /templates/{templateId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+    match /requests/{requestId} {
+      allow read, update, delete: if request.auth != null && resource.data.doctorId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.doctorId == request.auth.uid;
+    }
+  }
+}

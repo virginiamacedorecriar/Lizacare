@@ -1,0 +1,142 @@
+{
+  "rulesVersion": "2",
+  "collections": [
+    {
+      "name": "users",
+      "description": "Store doctor profiles",
+      "fields": [
+        { "name": "name", "type": "string" },
+        { "name": "crm", "type": "string" },
+        { "name": "uf", "type": "string" },
+        { "name": "cpf", "type": "string" },
+        { "name": "specialty", "type": "string" },
+        { "name": "cbo", "type": "string", "optional": true },
+        { "name": "phone", "type": "string", "optional": true },
+        { "name": "email", "type": "string" },
+        { "name": "rqe", "type": "string", "optional": true },
+        { "name": "cnes", "type": "string", "optional": true },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && request.auth.uid == document",
+        "create": "request.auth != null && request.auth.uid == document",
+        "update": "request.auth != null && request.auth.uid == document",
+        "delete": "false"
+      }
+    },
+    {
+      "name": "patients",
+      "description": "Store patient records",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "name", "type": "string" },
+        { "name": "birthDate", "type": "string", "optional": true },
+        { "name": "gender", "type": "string", "optional": true },
+        { "name": "cpf", "type": "string", "optional": true },
+        { "name": "healthPlanNumber", "type": "string", "optional": true },
+        { "name": "healthPlanValidity", "type": "string", "optional": true },
+        { "name": "healthPlanName", "type": "string", "optional": true },
+        { "name": "phone", "type": "string", "optional": true },
+        { "name": "email", "type": "string", "optional": true },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    },
+    {
+      "name": "operators",
+      "description": "Store health plan operators (Convênios)",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "name", "type": "string" },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    },
+    {
+      "name": "tables",
+      "description": "Store procedure tables metadata",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "operatorId", "type": "string" },
+        { "name": "name", "type": "string" },
+        { "name": "version", "type": "string", "optional": true },
+        { "name": "status", "type": "string" },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    },
+    {
+      "name": "procedures",
+      "description": "Store individual procedures",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "tableId", "type": "string" },
+        { "name": "code", "type": "string" },
+        { "name": "description", "type": "string" },
+        { "name": "synonym", "type": "string", "optional": true },
+        { "name": "defaultQuantity", "type": "number", "optional": true },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    },
+    {
+      "name": "templates",
+      "description": "Store PDF templates metadata and mappings",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "operatorId", "type": "string", "optional": true },
+        { "name": "name", "type": "string" },
+        { "name": "pdfStorageUrl", "type": "string" },
+        { "name": "mappings", "type": "array", "optional": true },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    },
+    {
+      "name": "requests",
+      "description": "Store medical requests",
+      "fields": [
+        { "name": "doctorId", "type": "string" },
+        { "name": "patientId", "type": "string" },
+        { "name": "operatorId", "type": "string" },
+        { "name": "templateId", "type": "string" },
+        { "name": "clinicalData", "type": "map" },
+        { "name": "procedures", "type": "array" },
+        { "name": "status", "type": "string" },
+        { "name": "pdfUrl", "type": "string", "optional": true },
+        { "name": "createdAt", "type": "timestamp" }
+      ],
+      "access": {
+        "read": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "create": "request.auth != null && request.resource.data.doctorId == request.auth.uid",
+        "update": "request.auth != null && resource.data.doctorId == request.auth.uid",
+        "delete": "request.auth != null && resource.data.doctorId == request.auth.uid"
+      }
+    }
+  ]
+}
